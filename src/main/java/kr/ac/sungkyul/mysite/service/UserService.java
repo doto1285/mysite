@@ -4,21 +4,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.ac.sungkyul.mysite.dao.UserDao;
+import kr.ac.sungkyul.mysite.exception.UserinfoUpdateException;
 import kr.ac.sungkyul.mysite.vo.UserVo;
 
 @Service
 public class UserService {
-	
+
 	@Autowired
 	private UserDao userDao;
-	
-	public void join ( UserVo vo ) {
+
+	public void join(UserVo vo) {
 		userDao.insert(vo);
 	}
-	
-	public UserVo login ( String email, String password ) {
+
+	public UserVo login(String email, String password) {
 		UserVo authUser = userDao.get(email, password);
 		return authUser;
+	}
+
+	public void updateInfo(UserVo vo) {
+		try {
+			userDao.update(vo);
+		} catch (UserinfoUpdateException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
